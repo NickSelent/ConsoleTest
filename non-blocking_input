@@ -1,5 +1,0 @@
-while (Console.KeyAvailable) {
-    if (Console.ReadKey(false).Key == ConsoleKey.Q) {
-        running = false;
-    }
-}
