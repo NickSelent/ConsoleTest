@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,16 +10,27 @@ namespace Merchants
 {
     class Program
     {
+
+        [DllImport("kernel32.dll", EntryPoint = "GetConsoleWindow", SetLastError = true)]
+        private static extern IntPtr GetConsoleHandle();
+
         static void Main(string[] args)
         {
-            bool running = true;
-            while (running)
-            {
-                ChangeWorld();
-                Render();
-                HandleUserInput(ref running);
 
-            }
+            var handler = GetConsoleHandle();
+
+            using (var graphics = Graphics.FromHwnd(handler))
+            using (var image = Image.FromFile("img101.png"))
+                graphics.DrawImage(image, 50, 50, 250, 200);
+
+            //bool running = true;
+            //while (running)
+            //{
+            //    ChangeWorld();
+            //    Render();
+            //    HandleUserInput(ref running);
+
+            //}
         }
 
         private static void Render()
