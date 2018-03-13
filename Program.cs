@@ -14,23 +14,26 @@ namespace Merchants
         [DllImport("kernel32.dll", EntryPoint = "GetConsoleWindow", SetLastError = true)]
         private static extern IntPtr GetConsoleHandle();
 
+
+
         static void Main(string[] args)
         {
 
-            var handler = GetConsoleHandle();
+            int textiles = 0;
+            int produce = 0;
+            int minerals = 0;
 
-            using (var graphics = Graphics.FromHwnd(handler))
-            using (var image = Image.FromFile("img101.png"))
-                graphics.DrawImage(image, 50, 50, 250, 200);
 
-            //bool running = true;
-            //while (running)
-            //{
-            //    ChangeWorld();
-            //    Render();
-            //    HandleUserInput(ref running);
+            ChangeWorld();
 
-            //}
+            bool running = true;
+            while (running)
+            {
+                //ChangeWorld();
+                Render();
+                HandleUserInput(ref running, ref textiles, ref produce, ref minerals);
+
+            }
         }
 
         private static void Render()
@@ -38,12 +41,24 @@ namespace Merchants
 
             Console.BackgroundColor = ConsoleColor.Blue;
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.SetCursorPosition(50, 2);
-            Console.WriteLine("    *               ");
-            Console.SetCursorPosition(50, 3);
-            Console.WriteLine("              *     ");
-            Console.SetCursorPosition(50, 4);
-            Console.WriteLine("       *            ");
+            Console.SetCursorPosition(76, 22);
+            Console.Write("    *               ");
+            Console.SetCursorPosition(76, 23);
+            Console.Write("              *     ");
+            Console.SetCursorPosition(76,24);
+            Console.Write("       *            ");
+
+
+            var handler = GetConsoleHandle();
+
+            using (var graphics = Graphics.FromHwnd(handler))
+            {
+                using (var image = Image.FromFile("img101.png"))
+                {
+                    graphics.DrawImage(image, 600, 0, 250, 200);
+                }
+            }
+
         }
 
         private static void ChangeWorld()
@@ -52,22 +67,26 @@ namespace Merchants
 
             Console.ForegroundColor = ConsoleColor.Red;
             Console.SetCursorPosition(15, 15);
-            Console.WriteLine("Textiles");
+            Console.Write("Textiles");
 
             Console.ForegroundColor = ConsoleColor.Green;
 
             Console.SetCursorPosition(15, 17);
-            Console.WriteLine("Produce");
+            Console.Write("Produce");
             Console.ForegroundColor = ConsoleColor.Blue;
 
             Console.SetCursorPosition(15, 19);
-            Console.WriteLine("Minerals");
+            Console.Write("Minerals");
 
-            Console.WriteLine(DateTime.Now.ToLongTimeString());
+            Console.SetCursorPosition(0, 22);
+            Console.Write(DateTime.Now.ToLongTimeString());
         }
 
-        private static void HandleUserInput(ref bool running)
+        private static void HandleUserInput(ref bool running, ref int textiles, ref int produce, ref int minerals)
         {
+
+            var result = 0;
+
             Console.SetCursorPosition(1, 24);
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
@@ -75,8 +94,27 @@ namespace Merchants
             if (x.ToUpper().Equals("Q") )
                 running = false;
 
+            if (textiles.Equals(0))
+            {
+                if (int.TryParse(x, out textiles)) ;
+                Console.SetCursorPosition(30, 15);
+                Console.Write(textiles);
+            }
+            else
+            {
+                if (produce.Equals(0))
+                { if (int.TryParse(x, out produce)) ;
+                    Console.SetCursorPosition(30, 17);
+                    Console.Write(produce);
+                }
+                else { if (int.TryParse(x, out minerals)) ;
+                    Console.SetCursorPosition(30, 19);
+                    Console.Write(minerals);
+                }
+            }
+
             Console.SetCursorPosition(1, 24);
-            Console.WriteLine("                          ");
+            Console.WriteLine("                                                   ");
         }
     }
 }
