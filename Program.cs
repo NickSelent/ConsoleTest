@@ -14,8 +14,6 @@ namespace Merchants
         [DllImport("kernel32.dll", EntryPoint = "GetConsoleWindow", SetLastError = true)]
         private static extern IntPtr GetConsoleHandle();
 
-
-
         static void Main(string[] args)
         {
 
@@ -29,24 +27,27 @@ namespace Merchants
             bool running = true;
             while (running)
             {
-                //ChangeWorld();
                 Render();
                 HandleUserInput(ref running, ref textiles, ref produce, ref minerals);
-
             }
         }
 
         private static void Render()
         {
 
+            Random rnd = new Random(DateTime.Now.Millisecond);
+            int x = rnd.Next(1, 19); 
+            int y = rnd.Next(1, 19); 
+            int z = rnd.Next(1, 19); 
+
             Console.BackgroundColor = ConsoleColor.Blue;
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.SetCursorPosition(76, 22);
-            Console.Write("    *               ");
-            Console.SetCursorPosition(76, 23);
-            Console.Write("              *     ");
-            Console.SetCursorPosition(76,24);
-            Console.Write("       *            ");
+            Console.SetCursorPosition(75+x, 10);
+            Console.Write("*");
+            Console.SetCursorPosition(75+y, 11);
+            Console.Write("*");
+            Console.SetCursorPosition(75+z, 12);
+            Console.Write("*");
 
 
             var handler = GetConsoleHandle();
@@ -55,14 +56,28 @@ namespace Merchants
             {
                 using (var image = Image.FromFile("img101.png"))
                 {
-                    graphics.DrawImage(image, 600, 0, 250, 200);
+                    graphics.DrawImage(image, 600, 5, 150, 150);
                 }
             }
+
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.SetCursorPosition(0, 22);
+            Console.Write(DateTime.Now.ToLongTimeString());
 
         }
 
         private static void ChangeWorld()
         {
+            Console.BackgroundColor = ConsoleColor.Blue;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.SetCursorPosition(75, 10);
+            Console.Write("                   ");
+            Console.SetCursorPosition(75, 11);
+            Console.Write("                   ");
+            Console.SetCursorPosition(75, 12);
+            Console.Write("                   ");
+
             Console.BackgroundColor = ConsoleColor.Black;
 
             Console.ForegroundColor = ConsoleColor.Red;
@@ -78,8 +93,7 @@ namespace Merchants
             Console.SetCursorPosition(15, 19);
             Console.Write("Minerals");
 
-            Console.SetCursorPosition(0, 22);
-            Console.Write(DateTime.Now.ToLongTimeString());
+
         }
 
         private static void HandleUserInput(ref bool running, ref int textiles, ref int produce, ref int minerals)
@@ -98,23 +112,32 @@ namespace Merchants
             {
                 if (int.TryParse(x, out textiles)) ;
                 Console.SetCursorPosition(30, 15);
+                Console.Write("     ");
+                Console.SetCursorPosition(30, 15);
                 Console.Write(textiles);
+                produce = 0;
             }
             else
             {
                 if (produce.Equals(0))
                 { if (int.TryParse(x, out produce)) ;
                     Console.SetCursorPosition(30, 17);
+                    Console.Write("     ");
+                    Console.SetCursorPosition(30, 17);
                     Console.Write(produce);
+                    minerals = 0;
                 }
                 else { if (int.TryParse(x, out minerals)) ;
                     Console.SetCursorPosition(30, 19);
+                    Console.Write("     ");
+                    Console.SetCursorPosition(30, 19);
                     Console.Write(minerals);
+                    textiles = 0;
                 }
             }
 
             Console.SetCursorPosition(1, 24);
-            Console.WriteLine("                                                   ");
+            Console.Write("                                                   ");
         }
     }
 }
