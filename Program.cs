@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Merchants
@@ -21,8 +22,120 @@ namespace Merchants
             int produce = 0;
             int minerals = 0;
 
+            Console.SetCursorPosition(1, 23);
+            Console.Write("Input # (q to quit):");
 
-            ChangeWorld();
+
+            Task t = Task.Run(() => {
+
+                Random rnd = new Random(DateTime.Now.Millisecond);
+                int x = rnd.Next(1, 19);
+                int milliseconds = 100;
+                     Thread.Sleep(milliseconds);
+                int y = rnd.Next(1, 19);
+
+                    Thread.Sleep(milliseconds);
+                int z = rnd.Next(1, 19);
+                int dx = 0;
+                int dy = 1; //0 move right, 1 move left
+                int dz = 0;
+                int ex = 75;
+                int ey = 75; // last position so we can clear the prior *
+                int ez = 75;
+
+                // Just loop.
+                int ctr = 0;
+                for (ctr = 0; ctr <= 1000000; ctr++)
+                {
+                    Thread.Sleep(milliseconds);
+
+                    var cx = Console.CursorLeft;
+                    var cz = Console.CursorTop;
+
+                    Console.BackgroundColor = ConsoleColor.Blue;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.SetCursorPosition(75 + x, 10);
+                    Console.Write("*");
+                    Console.SetCursorPosition(75 + y, 11);
+                    Console.Write("*");
+                    Console.SetCursorPosition(75 + z, 12);
+                    Console.Write("*");
+
+                    Console.SetCursorPosition(ex, 10);
+                    Console.Write(" ");
+                    Console.SetCursorPosition(ey, 11);
+                    Console.Write(" ");
+                    Console.SetCursorPosition(ez, 12);
+                    Console.Write(" ");
+
+                    ex = 75 + x;
+                    ey = 75 + y;
+                    ez = 75 + z;
+
+                    if (x.Equals(18))
+                    {
+                        dx = 1;
+                    } else if(x.Equals(0))
+                    {
+                        dx = 0;
+                    }
+
+                    if (dx.Equals(0))
+                    {
+                        x++;
+                    }
+                    else
+                    {
+                        x--;
+                    }
+
+                    if (y.Equals(18))
+                    {
+                        dy = 1;
+                    }
+                    else if (y.Equals(0))
+                    {
+                        dy = 0;
+                    }
+
+                    if (dy.Equals(0))
+                    {
+                        y++;
+                    }
+                    else
+                    {
+                        y--;
+                    }
+
+                    if (z.Equals(18))
+                    {
+                        dz = 1;
+                    }
+                    else if (z.Equals(0))
+                    {
+                        dz = 0;
+                    }
+
+                    if (dz.Equals(0))
+                    {
+                        z++;
+                    }
+                    else
+                    {
+                        z--;
+                    }
+                    
+
+
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.SetCursorPosition(cx, cz);
+                }
+            });
+            //t.Wait();
+
+
+        ChangeWorld();
 
             bool running = true;
             while (running)
@@ -35,19 +148,7 @@ namespace Merchants
         private static void Render()
         {
 
-            Random rnd = new Random(DateTime.Now.Millisecond);
-            int x = rnd.Next(1, 19); 
-            int y = rnd.Next(1, 19); 
-            int z = rnd.Next(1, 19); 
 
-            Console.BackgroundColor = ConsoleColor.Blue;
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.SetCursorPosition(75+x, 10);
-            Console.Write("*");
-            Console.SetCursorPosition(75+y, 11);
-            Console.Write("*");
-            Console.SetCursorPosition(75+z, 12);
-            Console.Write("*");
 
 
             var handler = GetConsoleHandle();
